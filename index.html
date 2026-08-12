@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Birthday Intro</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+overflow:hidden;height:100vh;display:flex;align-items:center;justify-content:center;
+font-family:Arial,sans-serif;
+background:linear-gradient(-45deg,#090979,#020024,#6a00ff,#00c2ff);
+background-size:400% 400%;animation:bg 12s ease infinite;
+}
+@keyframes bg{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+#stars{position:fixed;inset:0}
+.card{
+position:relative;z-index:2;
+width:min(90vw,500px);
+padding:40px;border-radius:25px;
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,.3);
+text-align:center;color:#fff;
+box-shadow:0 0 40px rgba(0,255,255,.35);
+animation:float 3s ease-in-out infinite;
+}
+@keyframes float{50%{transform:translateY(-12px)}}
+h1{font-size:2.2rem;text-shadow:0 0 20px cyan}
+p{margin:20px 0;font-size:1.1rem;line-height:1.8}
+a{
+display:inline-block;padding:16px 34px;
+border-radius:50px;text-decoration:none;color:#fff;
+background:linear-gradient(90deg,#ff0080,#7b2cff,#00d4ff);
+background-size:200% 100%;
+animation:btn 3s linear infinite;
+transition:.3s;
+}
+a:hover{transform:scale(1.08);box-shadow:0 0 25px #fff}
+@keyframes btn{to{background-position:200%}}
+.circle{position:absolute;border-radius:50%;filter:blur(8px);opacity:.45;animation:rise linear infinite}
+@keyframes rise{from{transform:translateY(120vh)}to{transform:translateY(-140vh)}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div id="bubbles"></div>
+<div class="card">
+<h1> تعالى يا بت هقولك حاجة  <br></h1>
+<br><br>
+
+<a href="birthday_slider.html"> دوسى هناااااا يلا </a>
+</div>
+<script>
+const c=document.getElementById("stars"),x=c.getContext("2d");
+function resize(){c.width=innerWidth;c.height=innerHeight}
+resize();addEventListener("resize",resize);
+const stars=[...Array(180)].map(()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+1,s:Math.random()*0.8+.2}));
+function draw(){
+x.clearRect(0,0,c.width,c.height);
+for(const s of stars){
+x.beginPath();x.fillStyle="white";x.globalAlpha=.8;
+x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fill();
+s.y+=s.s;if(s.y>innerHeight)s.y=0;
+}
+requestAnimationFrame(draw);
+}
+draw();
+const wrap=document.getElementById("bubbles");
+for(let i=0;i<30;i++){
+let d=document.createElement("div");
+d.className="circle";
+let size=20+Math.random()*120;
+d.style.width=d.style.height=size+"px";
+d.style.left=Math.random()*100+"vw";
+d.style.background=`hsl(${Math.random()*360},100%,60%)`;
+d.style.animationDuration=(8+Math.random()*12)+"s";
+d.style.animationDelay=(-Math.random()*10)+"s";
+wrap.appendChild(d);
+}
+document.addEventListener("mousemove",e=>{
+document.body.style.backgroundPosition=(e.clientX/20)+"px "+(e.clientY/20)+"px";
+});
+</script>
+</body>
+</html>
